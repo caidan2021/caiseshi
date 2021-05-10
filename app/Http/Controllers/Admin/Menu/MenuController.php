@@ -14,7 +14,6 @@ class MenuController extends Controller
         //按照当前用户的权限,返回特定的路由组
 
         //返回数据
-
         return $this->ok($menu);
     }
 }
