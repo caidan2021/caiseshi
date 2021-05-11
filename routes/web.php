@@ -28,6 +28,7 @@ Route::prefix('admin')->group(function ($router) {
 Route::prefix('admin')->group(function ($router) {
     $router->get('get_menu', 'Admin\Menu\MenuController@all')->name('admin.menu.get');
 });
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
