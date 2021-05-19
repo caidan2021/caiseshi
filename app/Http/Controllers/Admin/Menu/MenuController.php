@@ -4,13 +4,14 @@ namespace App\Http\Controllers\Admin\Menu;
 
 use App\Exceptions\LogicException;
 use App\Http\Controllers\Controller;
+use App\Modules\Services\Menu\MenuService;
 
 class MenuController extends Controller
 {
     public function all()
     {
         //获取全部的路由配置
-        $menu = config('admin_menu');
+        $menu = app(MenuService::class)->all();
         //按照当前用户的权限,返回特定的路由组
 
 
