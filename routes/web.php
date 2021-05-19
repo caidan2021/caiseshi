@@ -19,15 +19,11 @@ Route::prefix('admin')->group(function ($router) {
 
 
 
-/**
- * 后台配置
- */
-// Route::prefix('admin')->group(['middleware' => ['admin']], function ($router) {
-//     $router->get('get_menu', 'Admin\Menu\MenuController@all')->name('admin.menu.get');
-// });
 Route::prefix('admin')->group(function ($router) {
     $router->get('get_menu', 'Admin\Menu\MenuController@all')->name('admin.menu.get');
+    $router->get('listing/index', 'Listing\ListingController@index')->name('admin.listing.index');
 });
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
