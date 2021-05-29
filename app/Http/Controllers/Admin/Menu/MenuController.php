@@ -10,6 +10,7 @@ class MenuController extends Controller
 {
     public function all()
     {
+        return [];
         //获取全部的路由配置
         $menu = app(MenuService::class)->all();
 
