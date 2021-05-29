@@ -12,7 +12,6 @@ class MenuController extends Controller
     {
         //获取全部的路由配置
         $menu = app(MenuService::class)->all();
-        //按照当前用户的权限,返回特定的路由组
 
 
         //返回数据
