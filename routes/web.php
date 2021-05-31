@@ -21,7 +21,18 @@ Route::prefix('admin')->group(function ($router) {
 
 Route::prefix('admin')->group(function ($router) {
     $router->get('get_menu', 'Admin\Menu\MenuController@all')->name('admin.menu.get');
-    $router->get('listing/index', 'Listing\ListingController@index')->name('admin.listing.index');
+
+
+    //product
+    $router->get('/products/list', 'Admin\Products\ProductsController@list');
+    $router->post('/products/save', 'Admin\Products\ProductsController@save');
+
+
+    //sku
+    $router->get('/products/sku/list', 'Admin\Products\ProductSkusController@getListForProduct');
+    $router->get('/products/sku/edit', 'Admin\Products\ProductSkusController@edit');
+    $router->post('/products/sku/modules/save', 'Admin\Products\ProductSkusController@saveByModules');
+    $router->post('/products/sku/save', 'Admin\Products\ProductSkusController@save');
 });
 
 Auth::routes();

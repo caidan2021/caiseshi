@@ -38,7 +38,12 @@ trait ApiResponse
      */
     public function failed($message, $code = Response::HTTP_BAD_REQUEST)
     {
-        return $this->response(['error' => $message], $code);
+        return $this->response(['message' => $message, 'code' => $code]);
+    }
+
+    public function unOauth($message, $code = Response::HTTP_UNAUTHORIZED)
+    {
+        return $this->failed($message, $code);
     }
 
     /**
