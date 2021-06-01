@@ -1,1 +1,5 @@
 .env
+/vendor
+storage/debugbar
+storage/logs/
+storage/download/
