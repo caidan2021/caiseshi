@@ -4,6 +4,8 @@ namespace App\Modules\Services;
 
 use App\Components\Tools\Image;
 use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class FileService
 {
@@ -13,31 +15,23 @@ class FileService
 
     }
 
-    public function uploadImage($imageData)
+    public function uploadImage(?UploadedFile $file)
     {
-        dd(Storage::url('test.jpg'));
-        return Storage::download('test.jpg');
-        dd(Storage::download('test.jpg'));
-        dd(Storage::put('test.jpg',$imageData));
-        $fileName = array_get($imageData, 'name', null);
-        $fileSize = array_get($imageData, 'size', null);
-        if (!$fileName) {
-            return false;
+        if ($file->isFile() && $file->isValid()) {
+
+            $ext = $file->getClientOriginalExtension();
+            $targetPath = Image::generateImageStoragePath();
+            $fileName = Image::generateImageKey($ext);
+
+            $file->move($targetPath, $fileName);
+
+            $uploaded = [
+                'url' => env('IMAGE_RESOURCE_GET_URL') . $targetPath . $fileName,
+            ];
         }
-    
-        //限制图片大小
-        $max = 10;
-        if (!$fileSize || $fileSize > $max * 1024 * 1024) return false;
+        dd($uploaded);
 
-        $ext = Image::getImageExtension($imageData);
-        $targetPath = Image::generateImageKey($ext);
-        dd(Storage::put($targetPath));
-
-        $uploaded = [
-                'url' => $fileName,
-        ];
-
-        return $uploaded;
+        return $uploaded ?? null;
         
     }
 
