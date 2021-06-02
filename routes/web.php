@@ -20,7 +20,9 @@ Route::prefix('admin')->group(function ($router) {
 
 
 Route::prefix('admin')->group(function ($router) {
-    $router->get('get_menu', 'Admin\Menu\MenuController@all')->name('admin.menu.get');
+
+    //tools
+    $router->post('tools/uploadImage', 'Admin\Tools\FileController@uploadImage');
 
 
     //product
