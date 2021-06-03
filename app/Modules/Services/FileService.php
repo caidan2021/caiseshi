@@ -26,10 +26,9 @@ class FileService
             $file->move($targetPath, $fileName);
 
             $uploaded = [
-                'url' => env('IMAGE_RESOURCE_GET_URL') . $targetPath . $fileName,
+                'url' => env('RESOURCE_GET_URL') . $targetPath . $fileName,
             ];
         }
-        dd($uploaded);
 
         return $uploaded ?? null;
         

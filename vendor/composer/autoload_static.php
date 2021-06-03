@@ -25,6 +25,7 @@ class ComposerStaticInit7abc1477675437b1fe144d76c7cbc154
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
         '0d8253363903f0ac7b0978dcde4e28a0' => __DIR__ . '/..' . '/beyondcode/laravel-dump-server/helpers.php',
+        'e70ee5ff4bc809590c95a3917b6926ca' => __DIR__ . '/../..' . '/app/Support/helper.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -415,16 +416,24 @@ class ComposerStaticInit7abc1477675437b1fe144d76c7cbc154
     );
 
     public static $classMap = array (
+        'App\\Components\\Model\\BaseModel' => __DIR__ . '/../..' . '/app/Components/Model/BaseModel.php',
+        'App\\Components\\Repository\\BaseRepository' => __DIR__ . '/../..' . '/app/Components/Repository/BaseRepository.php',
+        'App\\Components\\Repository\\RepositoryInterface' => __DIR__ . '/../..' . '/app/Components/Repository/RepositoryInterface.php',
+        'App\\Components\\Tools\\Image' => __DIR__ . '/../..' . '/app/Components/Tools/Image.php',
         'App\\Console\\Kernel' => __DIR__ . '/../..' . '/app/Console/Kernel.php',
+        'App\\Exceptions\\ApiException' => __DIR__ . '/../..' . '/app/Exceptions/ApiException.php',
         'App\\Exceptions\\Handler' => __DIR__ . '/../..' . '/app/Exceptions/Handler.php',
+        'App\\Exceptions\\LogicException' => __DIR__ . '/../..' . '/app/Exceptions/LogicException.php',
         'App\\Http\\Controllers\\Admin\\Login\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/Login/LoginController.php',
-        'App\\Http\\Controllers\\Admin\\Menu\\MenuController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/Menu/MenuController.php',
+        'App\\Http\\Controllers\\Admin\\Products\\ProductSkusController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/Products/ProductSkusController.php',
+        'App\\Http\\Controllers\\Admin\\Products\\ProductsController' => __DIR__ . '/../..' . '/app/Http/Controllers/Admin/Products/ProductsController.php',
         'App\\Http\\Controllers\\Auth\\ForgotPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ForgotPasswordController.php',
         'App\\Http\\Controllers\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/LoginController.php',
         'App\\Http\\Controllers\\Auth\\RegisterController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/RegisterController.php',
         'App\\Http\\Controllers\\Auth\\ResetPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ResetPasswordController.php',
         'App\\Http\\Controllers\\Auth\\VerificationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/VerificationController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\CheckForMaintenanceMode' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckForMaintenanceMode.php',
@@ -433,6 +442,13 @@ class ComposerStaticInit7abc1477675437b1fe144d76c7cbc154
         'App\\Http\\Middleware\\TrimStrings' => __DIR__ . '/../..' . '/app/Http/Middleware/TrimStrings.php',
         'App\\Http\\Middleware\\TrustProxies' => __DIR__ . '/../..' . '/app/Http/Middleware/TrustProxies.php',
         'App\\Http\\Middleware\\VerifyCsrfToken' => __DIR__ . '/../..' . '/app/Http/Middleware/VerifyCsrfToken.php',
+        'App\\Modules\\Models\\ProductSkus' => __DIR__ . '/../..' . '/app/Modules/Models/ProductSkus.php',
+        'App\\Modules\\Models\\Products' => __DIR__ . '/../..' . '/app/Modules/Models/Products.php',
+        'App\\Modules\\Repos\\ProductSkusRepository' => __DIR__ . '/../..' . '/app/Modules/Repos/ProductSkusRepository.php',
+        'App\\Modules\\Repos\\ProductsRepository' => __DIR__ . '/../..' . '/app/Modules/Repos/ProductsRepository.php',
+        'App\\Modules\\Services\\FileService' => __DIR__ . '/../..' . '/app/Modules/Services/FileService.php',
+        'App\\Modules\\Services\\ProductSkuService' => __DIR__ . '/../..' . '/app/Modules/Services/ProductSkuService.php',
+        'App\\Modules\\Services\\ProductsService' => __DIR__ . '/../..' . '/app/Modules/Services/ProductsService.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
         'App\\Providers\\AuthServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AuthServiceProvider.php',
         'App\\Providers\\BroadcastServiceProvider' => __DIR__ . '/../..' . '/app/Providers/BroadcastServiceProvider.php',

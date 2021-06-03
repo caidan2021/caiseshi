@@ -12,7 +12,7 @@ class Image
 
     public static function generateImageStoragePath()
     {
-        return env('IMAGE_RESOURCE_STORAGE_PATH') . date('Y/m/d/');
+        return env('RESOURCE_STORAGE_PATH') . 'images/' . date('Y/m/d/');
     }
 
 
