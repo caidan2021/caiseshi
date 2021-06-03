@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddProductSkusTable extends Migration
+class AddThirdPartyProductSkusTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddProductSkusTable extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('product_skus')) {
-            Schema::create('product_skus', function (Blueprint $table) {
+        //
+        if (!Schema::hasTable('third_party_product_skus')) {
+            Schema::create('third_party_product_skus', function (Blueprint $table) {
                 $table->increments('id');
                 $table->unsignedInteger('product_id')->default(0)->comment('商品id');
                 $table->string('title', 1024)->default('')->comment('title');
@@ -22,7 +23,7 @@ class AddProductSkusTable extends Migration
                 $table->tinyInteger('unit')->default(0)->comment('单位');
                 $table->integer('stock')->default(0)->comment('库存');
                 $table->tinyInteger('shipping_type')->default(0)->comment('发货方式');
-                $table->string('jump_url', 1024)->default('')->comment('跳转地址');
+                $table->string('jump_url', 1024)->default('')->comment('跳转地址');;
                 $table->json('images')->nullable()->comment('图片');
                 $table->json('five_point')->nullable()->comment('五点');
                 $table->json('description')->nullable()->comment('详情');
@@ -33,7 +34,6 @@ class AddProductSkusTable extends Migration
 
             });
         }
-
     }
 
     /**
@@ -43,7 +43,8 @@ class AddProductSkusTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_skus');
         //
+        Schema::dropIfExists('third_party_product_skus');
+
     }
 }

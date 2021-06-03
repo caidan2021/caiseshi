@@ -31,7 +31,7 @@ class ProductSkusController extends Controller
     {
         $this->validate($request, [
             'id' => 'integer',
-            'modules' => 'string',
+//            'productId' => 'required',
         ]);
 
         $rt = app(ProductSkuService::class)->save(
@@ -48,14 +48,12 @@ class ProductSkusController extends Controller
     public function saveByModules(Request $request)
     {
         $this->validate($request, [
-            'id' => 'integer',
-            'modules' => 'string',
+            'id' => 'required|integer',
         ]);
 
         app(ProductSkuService::class)->saveByModules(
             $request->get('id'),
-            $request->get('modules'),
-            $request->except(['id', 'modules'])
+            $request->except('id')
         );
         return $this->ok();
     }
