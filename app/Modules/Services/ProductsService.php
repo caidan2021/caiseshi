@@ -9,6 +9,8 @@ class ProductsService
 
     public function getList()
     {
+
+
         return [
             [
                 'id' => 1,
