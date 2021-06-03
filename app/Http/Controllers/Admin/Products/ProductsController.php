@@ -17,6 +17,7 @@ class ProductsController extends Controller
 
     public function save(Request $request)
     {
+
         $this->validate($request, [
             'id' => 'nullable|integet',
             'title' => 'required|string',
