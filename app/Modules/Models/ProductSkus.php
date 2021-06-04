@@ -55,5 +55,10 @@ class ProductSkus extends BaseModel
         return $this->belongsTo(Products::class, 'product_id');
     }
 
+    public function getFirstMainImage()
+    {
+        $images = $this->images ?? [];
+        return array_get($images, 0, '');
+    }
 }
 
