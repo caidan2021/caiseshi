@@ -16,5 +16,11 @@ use App\Components\Repository\BaseRepository;
 class ProductSkusRepository extends BaseRepository
 {
 
+    public function getByProductId($productId)
+    {
+        return $this->model()->where('product_id', $productId)->get();
+    }
+
+
 }
 

@@ -3,6 +3,8 @@
 namespace App\Modules\Services;
 
 use App\Modules\Models\Products;
+use App\Modules\Models\ProductSkus;
+use App\Modules\Repos\ProductSkusRepository;
 
 class ProductsService
 {
@@ -10,63 +12,40 @@ class ProductsService
     public function getList()
     {
 
+        $data = [];
 
-        return [
-            [
-                'id' => 1,
-                'title' => 'first product',
-                'skuList' => [
-                    [
-                        'id' => 123,
-                        'title' => 'first sku',
-                        'redirectTo' => 'www.baidu.com',
-                        'status' => 1,
-                        'statusText' => '上线中',
-                        'price' => 39.99,
-                        'unit' => '$',
-                        'thumbnail' => 'http://img01.songzhaopian.cn/resource/2021/05/31/132f0b2c-82da-44a9-b3f7-b3279b407668-s70.jpg',
-                    ],
-                    [
-                        'id' => 123,
-                        'title' => 'first sku',
-                        'redirectTo' => 'www.baidu.com',
-                        'status' => 1,
-                        'statusText' => '上线中',
-                        'price' => 39.99,
-                        'unit' => '$',
-                        'thumbnail' => 'http://img01.songzhaopian.cn/resource/2021/05/31/132f0b2c-82da-44a9-b3f7-b3279b407668-s70.jpg',
-                    ],
-                ]
-            ],
+        $products = Products::all();
+        foreach ($products as $product) {
 
-            [
-                'id' => 1,
-                'title' => 'first product',
-                'skuList' => [
-                    [
-                        'id' => 123,
-                        'title' => 'first sku',
-                        'redirectTo' => 'www.baidu.com',
-                        'status' => 1,
-                        'statusText' => '上线中',
-                        'price' => 39.99,
-                        'unit' => '$',
-                        'thumbnail' => 'http://img01.songzhaopian.cn/resource/2021/05/31/132f0b2c-82da-44a9-b3f7-b3279b407668-s70.jpg',
-                    ],
-                    [
-                        'id' => 123,
-                        'title' => 'first sku',
-                        'redirectTo' => 'www.baidu.com',
-                        'status' => 1,
-                        'statusText' => '上线中',
-                        'price' => 39.99,
-                        'unit' => '$',
-                        'thumbnail' => 'http://img01.songzhaopian.cn/resource/2021/05/31/132f0b2c-82da-44a9-b3f7-b3279b407668-s70.jpg',
-                    ],
-                ]
-            ],
-        ];
-        
+            $skus = app(ProductSkusRepository::class)->getByProductId($product->id);
+
+            /** @var ProductSkus $sku */
+            $skuList = [];
+            foreach ($skus as $sku) {
+                $skuList[] = [
+                    'id' => $sku->id,
+                    'title' => $sku->title,
+                    'redirectTo' => $sku->getExtendItem('titleRedirectTo'),
+                    'status' => 1,
+                    'statusText' => '上线中',
+                    'price' => $sku->unit_price,
+                    'unit' => $sku->unit,
+                    'thumbnail' => $sku->getFirstMainImage(),
+
+                ];
+
+            }
+
+            $data[] = [
+                'id' => $product->id,
+                'title' => $product->title,
+                'skuList' => $skuList
+            ];
+
+        }
+
+        return $data;
+
     }
 
 
