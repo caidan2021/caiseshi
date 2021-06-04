@@ -51,15 +51,15 @@ class MakeDBModel extends GeneratorCommand
         $repoDir = sprintf("./app/Modules/Repos/%s%s", $path ? ucfirst($path).'/' : '', $repoName.'Repository.php');
         
 
-        // if ($this->files->exists($dirPath)) {
-        //      $this->error("model {$modelName} 已经存在");
-        //      return false;
-        // }
+        if ($this->files->exists($dirPath)) {
+             $this->error("model {$modelName} 已经存在");
+             return false;
+        }
 
-        // if ($this->files->exists($repoDir)) {
-        //     $this->error("repo {$modelName} 已经存在");
-        //     return false;
-        // }
+        if ($this->files->exists($repoDir)) {
+            $this->error("repo {$modelName} 已经存在");
+            return false;
+        }
 
         $this->makeDirectory($dirPath);
         $this->makeDirectory($repoDir);

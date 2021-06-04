@@ -6,6 +6,7 @@ use App\Modules\Models\ProductSkus;
 use App\Modules\Models\ThirdPartyProductSkus;
 use App\Modules\Repos\ProductSkusRepository;
 use App\Modules\Repos\ProductsRepository;
+use App\Modules\Repos\ThirdPartyProductSkusRepository;
 
 class ProductSkuService
 {
@@ -55,52 +56,136 @@ class ProductSkuService
 
     }
 
-    public function saveByModules($id, $modules)
+    /**
+     * 按照模块保存sku和外部sku的数据
+     * @param $skuId
+     * @param $modules
+     * @return bool
+     */
+    public function saveByModules($skuId, $modules)
     {
-        if (!($sku = ProductSkus::find($id))) return false;
+        if (!($sku = ProductSkus::find($skuId))) return false;
 
-        foreach ($modules as $module => $data) {
+        $productId = $sku->product_id;
 
-            $mine = array_get($data, 'mine', []);
-            $thirdParty = array_get($data, 'thirdParty', []);
+        try {
 
-            switch ($module) {
-                case ProductSkus::MODULE_OF_TITLE:
-                    $sku->title = array_get($mine, 'title', '');
-                    $sku->setExtendItem('titleRedirect', array_get($mine, 'redirectTo', ''));
-                    foreach ($thirdParty as $item) {
+            \DB::beginTransaction();
+            foreach ($modules as $module => $data) {
 
-                        //如果没有找到id，那么就新增
-                        if (!($id = array_get($item, 'id', null))) {
-                            $thirdPartyModel = new ThirdPartyProductSkus();
-                        } else {
-                            //如果id找不到对应的数据，那么新建
-                            //如果能找到对应的数据，那么更新
-                            $thirdPartyModel = ThirdPartyProductSkus::findOrNew($id);
+                $mine = array_get($data, 'mine', []);
+                $thirdParty = array_get($data, 'thirdParty', []);
 
-                            //如果有删除标识，就删除当前id的数据
+                switch ($module) {
+                    case ProductSkus::MODULE_OF_TITLE:
+                        $sku->title = array_get($mine, 'title', '');
+                        $sku->setExtendItem('titleRedirectTo', array_get($mine, 'redirectTo', ''));
 
+                        foreach ($thirdParty as $item) {
+
+                            //如果没有找到id，那么就新增
+                            if (!($id = array_get($item, 'id', null))) {
+                                $thirdPartyModel = new ThirdPartyProductSkus();
+                            } else {
+                                //如果id找不到对应的数据，那么新建
+                                //如果能找到对应的数据，那么更新
+                                $thirdPartyModel = ThirdPartyProductSkus::findOrNew($id);
+
+                                //如果有删除标识，就删除当前id的数据
+
+                            }
+                            $thirdPartyModel->module_type = ThirdPartyProductSkus::MODULE_TYPE_OF_TITLE;
+                            $thirdPartyModel->product_id = $productId;
+                            $thirdPartyModel->self_sku_id = $skuId;
+                            $thirdPartyModel->title = array_get($item, 'title', '');
+                            $thirdPartyModel->setExtendItem('titleRedirectTo', array_get($item, 'redirectTo', ''));
+                            $thirdPartyModel->save();
                         }
+                        break;
 
+                    case ProductSkus::MODULE_OF_FIVE_POINT:
+                        $sku->five_point = array_get($mine, 'detail', []);
+                        $sku->setExtendItem('fivePointRedirectTo', array_get($mine, 'redirectTo', ''));
 
-                    }
-                    break;
-                case ProductSkus::MODULE_OF_FIVE_POINT:
-                    break;
-                case ProductSkus::MODULE_OF_MAIN_PICTURE:
-                    break;
-                case ProductSkus::MODULE_OF_SEARCH_TERM:
-                    break;
-                case ProductSkus::MODULE_OF_DESCRIPTION:
-                    return false;
+                        foreach ($thirdParty as $item) {
+
+                            //如果没有找到id，那么就新增
+                            if (!($id = array_get($item, 'id', null))) {
+                                $thirdPartyModel = new ThirdPartyProductSkus();
+                            } else {
+                                //如果id找不到对应的数据，那么新建
+                                //如果能找到对应的数据，那么更新
+                                $thirdPartyModel = ThirdPartyProductSkus::findOrNew($id);
+
+                                //如果有删除标识，就删除当前id的数据
+
+                            }
+                            $thirdPartyModel->module_type = ThirdPartyProductSkus::MODULE_TYPE_OF_FIVE_POINT;
+                            $thirdPartyModel->product_id = $productId;
+                            $thirdPartyModel->self_sku_id = $skuId;
+                            $thirdPartyModel->five_point = array_get($item, 'detail', []);
+                            $thirdPartyModel->setExtendItem('fivePointRedirectTo', array_get($item, 'redirectTo', ''));
+                            $thirdPartyModel->save();
+                        }
+                        break;
+
+                    case ProductSkus::MODULE_OF_MAIN_PICTURE:
+
+                        $sku->images = array_get($mine, 'detail', []);
+                        $sku->setExtendItem('imagesRedirectTo', array_get($mine, 'redirectTo', ''));
+
+                        foreach ($thirdParty as $item) {
+
+                            //如果没有找到id，那么就新增
+                            if (!($id = array_get($item, 'id', null))) {
+                                $thirdPartyModel = new ThirdPartyProductSkus();
+                            } else {
+                                //如果id找不到对应的数据，那么新建
+                                //如果能找到对应的数据，那么更新
+                                $thirdPartyModel = ThirdPartyProductSkus::findOrNew($id);
+
+                                //如果有删除标识，就删除当前id的数据
+
+                            }
+                            $thirdPartyModel->module_type = ThirdPartyProductSkus::MODULE_TYPE_OF_MAIN_PICTURE;
+                            $thirdPartyModel->product_id = $productId;
+                            $thirdPartyModel->self_sku_id = $skuId;
+                            $thirdPartyModel->images = array_get($item, 'detail', []);
+                            $thirdPartyModel->setExtendItem('imagesRedirectTo', array_get($item, 'redirectTo', ''));
+                            $thirdPartyModel->save();
+                        }
+                        break;
+
+                    case ProductSkus::MODULE_OF_SEARCH_TERM:
+                        $sku->search_term = array_get($mine, 'detail', []);
+                        $sku->setExtendItem('searchTermRedirectTo', array_get($mine, 'redirectTo', ''));
+                        break;
+
+                    case ProductSkus::MODULE_OF_DESCRIPTION:
+                        return false;
+                }
             }
-        }
 
-        $sku->save();
-        return true;
+            $sku->save();
+            \DB::commit();
+
+            return true;
+
+
+        } catch (\Exception $exception) {
+
+            \DB::rollBack();
+            return false;
+        }
 
     }
 
+    /**
+     * 按照模块获取fmt的数据
+     * @param $id
+     * @param $module
+     * @return array|array[]|bool
+     */
     public function fmtModuleForResponse($id, $module)
     {
         if (!($sku = ProductSkus::find($id))) return false;
@@ -112,23 +197,7 @@ class ProductSkuService
                         'title' => $sku->title,
                         'redirectTo' => $sku->getExtendItem('titleRedirect'),
                     ],
-                    'thirdParty' => [
-                        [
-                            'id' => 123,
-                            'title' => 'new title',
-                            'redirectTo' => 'www.baidu.com',
-                        ],
-                        [
-                            'id' => 124,
-                            'title' => 'new title',
-                            'redirectTo' => 'www.baidu.com',
-                        ],
-                        [
-                            'id' => 125,
-                            'title' => 'new title',
-                            'redirectTo' => 'www.baidu.com',
-                        ],
-                    ],
+                    'thirdParty' => app(ThirdPartyProductSkusRepository::class)->getDataForModule($id, $sku->product_id, $module),
                 ];
                 break;
 
@@ -136,94 +205,30 @@ class ProductSkuService
                 return [
                     'mine' => [
                         'redirect' => 'www.baidu.com',
-                        'detail' => [
-                            'first point',
-                            'first point',
-                            'first point',
-                            'first point',
-                            'first point',
-                        ]
+                        'detail' => $sku->five_point,
                     ],
-                    'thirdParty' => [
-                        [
-                            'id' => 12345,
-                            'redirect' => 'www.baidu.com',
-                            'detail' => [
-                                'first point',
-                                'first point',
-                                'first point',
-                                'first point',
-                                'first point',
-                            ]
-                        ],
-                        [
-                            'id' => 12345,
-                            'redirect' => 'www.baidu.com',
-                            'detail' => [
-                                'first point',
-                                'first point',
-                                'first point',
-                                'first point',
-                                'first point',
-                            ]
-                        ],
-                    ],
-                ];
-                break;
-
-            case ProductSkus::MODULE_OF_SEARCH_TERM:
-                return [
-                    'mine' => [
-                        'redirect' => 'www.baidu.com',
-                        'detail' =>  [
-                            'search term item 1',
-                            'search term item 2',
-                            'search term item 3',
-                            'search term item 4',
-                            'search term item 5',
-                        ]
-                    ],
-                    'thirdParty' => []
+                    'thirdParty' => app(ThirdPartyProductSkusRepository::class)->getDataForModule($id, $sku->product_id, $module),
                 ];
                 break;
 
             case ProductSkus::MODULE_OF_MAIN_PICTURE:
                 return [
                     'mine' => [
-                        'redirect' => 'www.baidu.com',
-                        'detail' => [
-                            'http://img01.songzhaopian.cn/resource/2021/05/31/132f0b2c-82da-44a9-b3f7-b3279b407668-s70.jpg',
-                            'http://img01.songzhaopian.cn/resource/2021/05/31/132f0b2c-82da-44a9-b3f7-b3279b407668-s70.jpg',
-                            'http://img01.songzhaopian.cn/resource/2021/05/31/132f0b2c-82da-44a9-b3f7-b3279b407668-s70.jpg',
-                            'http://img01.songzhaopian.cn/resource/2021/05/31/132f0b2c-82da-44a9-b3f7-b3279b407668-s70.jpg',
-                            'http://img01.songzhaopian.cn/resource/2021/05/31/132f0b2c-82da-44a9-b3f7-b3279b407668-s70.jpg',
-                        ]
+                        'redirectTo' => $sku->getExtendItem('imagesRedirectTo'),
+                        'detail' =>  $sku->images,
                     ],
-                    'thirdParty' => [
-                        [
-                            'id' => 123456,
-                            'redirect' => 'www.baidu.com',
-                            'detail' => [
-                                'http://img01.songzhaopian.cn/resource/2021/05/31/132f0b2c-82da-44a9-b3f7-b3279b407668-s70.jpg',
-                                'http://img01.songzhaopian.cn/resource/2021/05/31/132f0b2c-82da-44a9-b3f7-b3279b407668-s70.jpg',
-                                'http://img01.songzhaopian.cn/resource/2021/05/31/132f0b2c-82da-44a9-b3f7-b3279b407668-s70.jpg',
-                                'http://img01.songzhaopian.cn/resource/2021/05/31/132f0b2c-82da-44a9-b3f7-b3279b407668-s70.jpg',
-                                'http://img01.songzhaopian.cn/resource/2021/05/31/132f0b2c-82da-44a9-b3f7-b3279b407668-s70.jpg',
-                            ]
-                        ],
-                        [
-                            'id' => 123456,
-                            'redirect' => 'www.baidu.com',
-                            'detail' => [
-                                'http://img01.songzhaopian.cn/resource/2021/05/31/132f0b2c-82da-44a9-b3f7-b3279b407668-s70.jpg',
-                                'http://img01.songzhaopian.cn/resource/2021/05/31/132f0b2c-82da-44a9-b3f7-b3279b407668-s70.jpg',
-                                'http://img01.songzhaopian.cn/resource/2021/05/31/132f0b2c-82da-44a9-b3f7-b3279b407668-s70.jpg',
-                                'http://img01.songzhaopian.cn/resource/2021/05/31/132f0b2c-82da-44a9-b3f7-b3279b407668-s70.jpg',
-                                'http://img01.songzhaopian.cn/resource/2021/05/31/132f0b2c-82da-44a9-b3f7-b3279b407668-s70.jpg',
-                            ]
-                        ],
-                    ],
+                    'thirdParty' => app(ThirdPartyProductSkusRepository::class)->getDataForModule($id, $sku->product_id, $module),
                 ];
+                break;
+
+            case ProductSkus::MODULE_OF_SEARCH_TERM:
+                return [
+                    'mine' => [
+                        'redirectTo' => $sku->getExtendItem('searchTermRedirectTo'),
+                        'detail' => $sku->search_term,
+                    ]
+                ];
+
                 break;
 
             case ProductSkus::MODULE_OF_DESCRIPTION:
@@ -233,7 +238,7 @@ class ProductSkuService
                         'detail' => [
                             'text' => '',
                             'picture' => [
-                                'http://img01.songzhaopian.cn/resource/2021/05/31/132f0b2c-82da-44a9-b3f7-b3279b407668-s70.jpg',
+                                'http://106.52.60.167:6001/resource/images/2021/06/03/1622726753.png',
                             ]
                         ],
                     ],

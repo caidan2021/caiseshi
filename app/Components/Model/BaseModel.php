@@ -3,6 +3,8 @@
 namespace App\Components\Model;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class BaseModel extends Model
 {
@@ -26,9 +28,27 @@ class BaseModel extends Model
      */
     public function formatDate($field)
     {
-        dd($this->title);
-        dd($$this->field);
         return date('Y-m-d H:i:s', $this->$field);
+    }
+
+    public function setExtendItem($key, $value)
+    {
+        if (Schema::hasColumn($this->table, 'extends')) {
+            $this->extends = array_replace($this->extends ?? [], [$key => $value]);
+            return $this;
+        } else {
+            return false;
+        }
+    }
+
+    public function getExtendItem($key)
+    {
+        if (Schema::hasColumn($this->table, 'extends')) {
+            return array_get($this->extends ?? [], $key, null);
+        } else {
+            return false;
+        }
+
     }
 
 }

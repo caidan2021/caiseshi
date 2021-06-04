@@ -22,9 +22,9 @@ class AddProductSkusTable extends Migration
                 $table->tinyInteger('unit')->default(0)->comment('单位');
                 $table->integer('stock')->default(0)->comment('库存');
                 $table->tinyInteger('shipping_type')->default(0)->comment('发货方式');
-                $table->string('jump_url', 1024)->default('')->comment('跳转地址');
                 $table->json('images')->nullable()->comment('图片');
                 $table->json('five_point')->nullable()->comment('五点');
+                $table->json('search_term')->nullable();
                 $table->json('description')->nullable()->comment('详情');
                 $table->json('extends')->nullable()->comment('扩展');
                 $table->unsignedInteger('created_at')->default(0)->comment('创建时间');

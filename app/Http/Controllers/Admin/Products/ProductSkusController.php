@@ -51,10 +51,12 @@ class ProductSkusController extends Controller
             'id' => 'required|integer',
         ]);
 
-        app(ProductSkuService::class)->saveByModules(
+        $rt = app(ProductSkuService::class)->saveByModules(
             $request->get('id'),
             $request->except('id')
         );
+
+        if (!$rt) return $this->failed('保存失败');
         return $this->ok();
     }
 

@@ -1,22 +1,46 @@
-<?php
+<?php 
+/**
+ * Created by root
+ * Date: 2021-06-04 13:34:27
+ */
 
 namespace App\Modules\Models;
-
 use App\Components\Model\BaseModel;
-use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 /**
  * Class ProductSkus
- * @package App\Modules\Models
- * @property int $id 主键
+ * @author  root
+ * @package  App\Modules\Models
+ *  
+ * @property int id 
+ * @property int product_id 商品id
+ * @property string title title
+ * @property int unit_price 价格
+ * @property int unit 单位
+ * @property int stock 库存
+ * @property int shipping_type 发货方式
+ * @property string images 图片
+ * @property string five_point 五点
+ * @property string search_term
+ * @property string description 详情
+ * @property array extends 扩展
+ * @property int created_at 创建时间
+ * @property int updated_at 更新时间
+ * @property int deleted_at 删除时间
+ *
  */
 class ProductSkus extends BaseModel
 {
-//    use SoftDeletes;
+    //    use SoftDeletes;
     protected $table = 'product_skus';
 
-    protected $cats = [
-        'extends' => 'json',
+    protected $casts = [
+        'extends' => 'array',
+        'five_point' => 'array',
+        'images' => 'array',
+        'search_term' => 'array',
+        'description' => 'array',
     ]; 
     //
     const MODULE_OF_TITLE = 'title';
@@ -31,18 +55,5 @@ class ProductSkus extends BaseModel
         return $this->belongsTo(Products::class, 'product_id');
     }
 
-    public function setExtendItem($key, $value)
-    {
-        $this->extends = json_encode(array_replace(json_decode($this->extends, true) ?? [], [
-            $key => $value,
-        ]));
-        return $this;
-        
-    }
-
-    public function getExtendItem($key)
-    {
-        return array_get(json_decode($this->extends, true) ?? [], $key, null);
-
-    }
 }
+
