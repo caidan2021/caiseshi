@@ -59,16 +59,6 @@ class ProductsService
 
         $id = array_get($params, 'id');
         $title = array_get($params, 'title');
-        
-
-
-
-
-
-
-
-
-
         $product = Products::findOrNew($id);
         $product->title = $title;
         $product->save();
