@@ -51,6 +51,7 @@ class ProductsService
 
     public function saveProduct($params)
     {
+
         $id = array_get($params, 'id');
         $title = array_get($params, 'title');
 
